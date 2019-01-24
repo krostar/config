@@ -1,0 +1,25 @@
+# From https://github.com/github/gitignore/blob/master/Go.gitignore
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, build with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Vendors specific
+/_vendor-*
+/vendor
+/vendor.orig
+
+# Project-specific
+## binaries and build
+/build/cover
+
+## Development tools
+/.vscode

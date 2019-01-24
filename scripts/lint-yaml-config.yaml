@@ -1,0 +1,89 @@
+---
+
+ignore: "vendor/"
+
+rules:
+  braces:
+    level: "warning"
+    max-spaces-inside: 0
+    max-spaces-inside-empty: 0
+    min-spaces-inside: 0
+    min-spaces-inside-empty: 0
+
+  brackets:
+    level: "warning"
+    max-spaces-inside: 0
+    max-spaces-inside-empty: 0
+    min-spaces-inside: 0
+    min-spaces-inside-empty: 0
+
+  colons:
+    max-spaces-after: 1
+    max-spaces-before: 0
+
+  commas:
+    max-spaces-after: 1
+    max-spaces-before: 0
+    min-spaces-after: 1
+
+  comments:
+    level: "warning"
+    min-spaces-from-content: 1
+    require-starting-space: true
+
+  comments-indentation:
+    level: "warning"
+
+  document-end:
+    level: "warning"
+    present: true
+
+  document-start:
+    level: "warning"
+    present: true
+
+  empty-lines:
+    level: "warning"
+    max: 2
+    max-end: 0
+    max-start: 0
+
+  empty-values:
+    forbid-in-block-mappings: true
+    forbid-in-flow-mappings: true
+
+  hyphens:
+    max-spaces-after: 1
+
+  indentation:
+    check-multi-line-strings: true
+    indent-sequences: true
+    spaces: "consistent"
+
+  key-duplicates: "enable"
+
+  key-ordering:
+    level: "warning"
+
+  line-length:
+    allow-non-breakable-inline-mappings: true
+    allow-non-breakable-words: true
+    level: "warning"
+    max: 120
+
+  new-line-at-end-of-file: "enable"
+
+  octal-values:
+    forbid-explicit-octal: false
+    forbid-implicit-octal: true
+
+  quoted-strings:
+    level: "warning"
+    quote-type: "double"
+
+  trailing-spaces: "enable"
+
+  truthy:
+    level: "warning"
+
+...

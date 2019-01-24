@@ -1,0 +1,30 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+quote_type = double
+
+indent_style = space
+indent_size = 4
+continuation_indent_size = 4
+
+trim_trailing_whitespace = true
+insert_final_newline = true
+spaces_around_operators = true
+
+spaces_around_brackets = both
+curly_bracket_next_line = false
+indent_brace_style = K&R
+
+[*.go]
+indent_style = tab
+
+[Makefile]
+indent_style = tab
+
+[*.yaml]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
