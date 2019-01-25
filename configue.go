@@ -1,5 +1,3 @@
-// nolint: misspell
-
 package configue
 
 import (
@@ -32,7 +30,9 @@ func Load(cfg interface{}, opts ...Option) error {
 // Load tries to apply defaults to the provided interface (see the defaulter package) and
 // call all sources to load the configuration.
 func (c *Configue) Load(cfg interface{}) error {
-	defaulter.SetDefault(cfg)
+	if err := defaulter.SetDefault(cfg); err != nil {
+		return errors.Wrap(err, "unable to set defaults")
+	}
 
 	for _, source := range c.sources {
 		if err := c.loadSource(source, cfg); err != nil {
@@ -45,9 +45,9 @@ func (c *Configue) Load(cfg interface{}) error {
 func (c *Configue) loadSource(source Source, cfg interface{}) error {
 	var err error
 
-	if s, ok := source.(sourceThatUnmarshal); ok {
+	if s, ok := source.(SourceUnmarshal); ok {
 		err = s.Unmarshal(cfg)
-	} else if s, ok := source.(sourceThatUseReflection); ok {
+	} else if s, ok := source.(SourceGetReprValueByKey); ok {
 		err = reflectThroughConfig(s, cfg)
 	} else {
 		err = errors.Errorf("%s does not fulfill any load interface", source.Name())

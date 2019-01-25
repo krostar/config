@@ -1,12 +1,9 @@
 # ex: /Users/alice/go/src/github.com/alice/project/
-ABSOLUTEPATH := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
-# ex: project
-PROJECT      := $(lastword $(subst /, ,$(ABSOLUTEPATH)))
-
-DIR_SCRIPT   := $(ABSOLUTEPATH)/scripts
-DIR_BUILD    := $(ABSOLUTEPATH)/build
-DIR_BIN      := $(DIR_BUILD)/bin
-DIR_COVER    := $(DIR_BUILD)/cover
+DIR_ABS    := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+DIR_SCRIPT := $(DIR_ABS)/scripts
+DIR_BUILD  := $(DIR_ABS)/build
+DIR_BIN    := $(DIR_BUILD)/bin
+DIR_COVER  := $(DIR_BUILD)/cover
 
 # use this rule as the default make rule
 .DEFAULT_GOAL := help
@@ -27,6 +24,6 @@ cover: $(DIR_COVER)/coverage.out ## Display the coverage report
 	@go tool cover -html=$(DIR_COVER)/coverage.out
 $(DIR_COVER)/coverage.out: test-go
 
-# create directory in case they don't exists
+# create directory in case they doesn't exists
 $(DIR_COVER):
 	@mkdir -p $@

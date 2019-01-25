@@ -34,41 +34,40 @@ func SetDefault(i interface{}) error {
 func walkThrough(v *reflect.Value) {
 	switch v.Kind() {
 	case reflect.Ptr:
-		// 1. we don't want to put default on nil pointed value
-		//    so just leave here
+		// we don't want to put default on nil pointed value so just leave here
 		if v.IsNil() {
 			break
 		}
 
-		// 2. retrieve the pointed value
+		// retrieve the pointed value
 		var pv = v.Elem()
 
-		// 3. try to put a default recursively to the pointed value
+		// try to put a default recursively to the pointed value
 		walkThrough(&pv)
 	case reflect.Struct:
 		const tagKey = "default"
-		// 1. try to put default on the whole structure
+		// try to put default on the whole structure
 		tryToSetDefault(v)
 
-		// 2. try each fields, there may be empty fields that also want defaults
+		// try each fields, there may be empty fields that also want defaults
 		for i := 0; i < v.NumField(); i++ {
-			// 3. get field
+			// get field
 			var (
 				childV     = v.Field(i)
 				childField = v.Type().Field(i)
 			)
 
-			// 4. check if the tag discard the field
+			// check if the tag discard the field
 			if tag := childField.Tag.Get(tagKey); tag == "-" {
 				continue
 			}
 
-			// 5. ignore it if the field is unexported
+			// ignore it if the field is unexported
 			if v.Type().Field(i).PkgPath != "" {
 				continue
 			}
 
-			// 6. handle the child recursively
+			// handle the child recursively
 			walkThrough(&childV)
 		}
 	default:
@@ -78,16 +77,16 @@ func walkThrough(v *reflect.Value) {
 }
 
 func tryToSetDefault(v *reflect.Value) {
-	// 1. since we're gonna need the value to match an interface through the
-	//    address of the struct, make sure we can do that
+	// since we're gonna need the value to match an interface through the
+	// address of the struct, make sure we can do that
 	if !v.IsValid() || !v.CanInterface() || !v.CanAddr() {
 		return
 	}
 
-	// 2. since the defaulter updates itself, it needs to receive a pointor;
-	//    so try if the value's pointor's interface implements the defaulter interface
+	// since the defaulter updates itself, it needs to receive a pointor;
+	// so try if the value's pointor's interface implements the defaulter interface
 	if f, ok := v.Addr().Interface().(setDefaultFunc); ok {
-		// 3. if the value is the zero value, call the defaulter
+		// if the value is the zero value, call the defaulter
 		if isZeroValue(v) {
 			f.SetDefault()
 		}

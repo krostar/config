@@ -37,6 +37,7 @@ func TestSetDefault(t *testing.T) {
 	var (
 		sc = structComplex{
 			PTRTouched: new(stringDefaultable),
+			unexported: "",
 		}
 		defaultable = stringDefaultable("world")
 		expectedSC  = structComplex{

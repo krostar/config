@@ -1,10 +1,21 @@
 # configue
 
+[![godoc](https://img.shields.io/badge/godoc-reference-blue.svg?style=for-the-badge)](https://godoc.org/github.com/krostar/configue)
+[![Licence](https://img.shields.io/github/license/krostar/configue.svg?style=for-the-badge)](https://tldrlegal.com/license/mit-license)
+![Latest version](https://img.shields.io/github/tag/krostar/configue.svg?style=for-the-badge)
+![Lastest version release date](https://img.shields.io/github/release-date/krostar/configue.svg?style=for-the-badge)
+
+[![Build Status](https://img.shields.io/travis/krostar/configue/master.svg?style=for-the-badge)](https://travis-ci.org/krostar/configue.svg?branch=master)
+[![Code quality](https://img.shields.io/codacy/grade/14e0121b7ace47afa5022d5db6d0858c/master.svg?style=for-the-badge)](https://app.codacy.com/project/krostar/configue/dashboard)
+[![Code coverage](https://img.shields.io/codacy/coverage/14e0121b7ace47afa5022d5db6d0858c.svg?style=for-the-badge)](https://app.codacy.com/project/krostar/configue/dashboard)
+
 A simple yet useful configuration package.
 
 ## Motivation
 
-On any project I've made personnally or for a company, except if the project was really (really) small, I always needed at one point to be able to configure a component in the project (the http listening port, the database credential, a business configuration, ...). I've been using __viper__ for some times now, but I was not really happy about it for some reasons (usage of strings keys to get configuration, globally defined configuration which are a pita in big project to understand what's used where, and to use in test, ...). I also used __confita__ From my point of view a configuration package should:
+On any project I've made personnally or for a company, except if the project was really (really) small, I always needed at one point to be able to configure a component in the project (the http listening port, the database credential, a business configuration, ...). I've been using __viper__ for some times now, but I was not really happy about it for some reasons (usage of strings keys to get configuration, globally defined configuration which are a pita in big project to understand what's used where, and to use in test, ...). I also used __confita__ from which this project was inspired.
+
+From my point of view a configuration package should:
 
 - have a __priorization of "sources"__ (for example file < env < cli args)
 - be __strongly typed__ (it should not use string keys, or return interface{})
