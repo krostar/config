@@ -45,9 +45,9 @@ func (c *Configue) Load(cfg interface{}) error {
 func (c *Configue) loadSource(source Source, cfg interface{}) error {
 	var err error
 
-	if s, ok := source.(sourceThatUnmarshal); ok {
+	if s, ok := source.(SourceUnmarshal); ok {
 		err = s.Unmarshal(cfg)
-	} else if s, ok := source.(sourceThatUseReflection); ok {
+	} else if s, ok := source.(SourceGetReprValueByKey); ok {
 		err = reflectThroughConfig(s, cfg)
 	} else {
 		err = trivialerr.New("%s does not fulfill any load interface", source.Name())

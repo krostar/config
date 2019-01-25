@@ -32,7 +32,7 @@ func (e *Env) keyFormatter(key string) string {
 }
 
 // GetReprValueByKey gets the key's value from the system environment
-// and return it. It return an error that implement IsTrivial when the key is not found.GetReprValueByKey
+// and return it. It return an error that implement IsTrivial when the key is not found.GetReprValueByKey.
 // It never returns another kind of error.
 func (e *Env) GetReprValueByKey(key string) ([]byte, error) {
 	key = e.keyFormatter(key)

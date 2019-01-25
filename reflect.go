@@ -12,7 +12,7 @@ import (
 	"github.com/krostar/configue/trivialerr"
 )
 
-func reflectThroughConfig(source sourceThatUseReflection, cfg interface{}) error {
+func reflectThroughConfig(source SourceGetReprValueByKey, cfg interface{}) error {
 	var value = reflect.ValueOf(cfg)
 
 	if value.IsNil() {
@@ -26,7 +26,7 @@ func reflectThroughConfig(source sourceThatUseReflection, cfg interface{}) error
 	return nil
 }
 
-func reflectRecursivly(source sourceThatUseReflection, name string, v *reflect.Value) (bool, error) {
+func reflectRecursivly(source SourceGetReprValueByKey, name string, v *reflect.Value) (bool, error) {
 	switch v.Kind() {
 	case reflect.Invalid:
 		return false, errors.New("value is invalid")
@@ -39,7 +39,7 @@ func reflectRecursivly(source sourceThatUseReflection, name string, v *reflect.V
 	}
 }
 
-func reflectHandlePointer(source sourceThatUseReflection, name string, v *reflect.Value) (bool, error) {
+func reflectHandlePointer(source SourceGetReprValueByKey, name string, v *reflect.Value) (bool, error) {
 	var validV = *v
 
 	// if we have a nil pointor, build a non-nil one
@@ -63,7 +63,7 @@ func reflectHandlePointer(source sourceThatUseReflection, name string, v *reflec
 	return true, nil
 }
 
-func reflectHandleStruct(source sourceThatUseReflection, name string, v *reflect.Value) (bool, error) {
+func reflectHandleStruct(source SourceGetReprValueByKey, name string, v *reflect.Value) (bool, error) {
 	const tagKey = "cfg"
 	var oneIsSet = false
 
@@ -97,7 +97,7 @@ func reflectHandleStruct(source sourceThatUseReflection, name string, v *reflect
 	return oneIsSet, nil
 }
 
-func reflectHandleDefault(source sourceThatUseReflection, name string, v *reflect.Value) (bool, error) {
+func reflectHandleDefault(source SourceGetReprValueByKey, name string, v *reflect.Value) (bool, error) {
 	// asks nicely if source has a value for this key
 	repr, err := source.GetReprValueByKey(name)
 

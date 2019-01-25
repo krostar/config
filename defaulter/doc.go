@@ -3,7 +3,7 @@ Package defaulter helps to set default.
 It recursively walk through any types and try to apply defaults.
 
 A default is applied if the type implement the setDefaultFunc interface
-and the actual value is has the zero value of the type.
+and the actual value is the zero value of the type.
 
 Applying defaults
 
