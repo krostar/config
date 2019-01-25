@@ -5,12 +5,16 @@ type Source interface {
 	Name() string
 }
 
-type sourceThatUseReflection interface {
+// SourceGetReprValueByKey defines the way a source should
+// return a value based on a key.
+type SourceGetReprValueByKey interface {
 	Source
 	GetReprValueByKey(key string) ([]byte, error)
 }
 
-type sourceThatUnmarshal interface {
+// SourceUnmarshal defines a way to apply a source to
+// a config via unmarshalling directly to it.
+type SourceUnmarshal interface {
 	Source
 	Unmarshal(cfg interface{}) error
 }

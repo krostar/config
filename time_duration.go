@@ -14,7 +14,7 @@ func (cd *customDuration) ToDuration() time.Duration {
 	return time.Duration(*cd)
 }
 
-// ToInt64 converts the custom curation to the original value behind a time.Duration.
+// ToInt64 converts the custom duration to the original value behind a time.Duration.
 func (cd *customDuration) ToInt64() int64 {
 	return int64(*cd)
 }
@@ -24,7 +24,7 @@ func (cd *customDuration) MarshalJSON() ([]byte, error) {
 	return json.Marshal((time.Duration(*cd)).String())
 }
 
-// UnMarshalJSON implements json Unmarshaler interface.
+// UnmarshalJSON implements json Unmarshaler interface.
 func (cd *customDuration) UnmarshalJSON(b []byte) error {
 	var v interface{}
 	if err := json.Unmarshal(b, &v); err != nil {
