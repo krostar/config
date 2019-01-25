@@ -1,5 +1,14 @@
 # configue
 
+[![godoc](https://img.shields.io/badge/godoc-reference-blue.svg?style=for-the-badge)](https://godoc.org/github.com/krostar/configue)
+[![Licence](https://img.shields.io/github/license/krostar/configue.svg?style=for-the-badge)](https://tldrlegal.com/license/mit-license)
+![Latest version](https://img.shields.io/github/tag/krostar/configue.svg?style=for-the-badge)
+![Lastest version release date](https://img.shields.io/github/release-date/krostar/configue.svg?style=for-the-badge)
+
+[![Build Status](https://img.shields.io/travis/krostar/configue/master.svg?style=for-the-badge)](https://travis-ci.org/krostar/configue.svg?branch=master)
+[![Code quality](https://img.shields.io/codacy/grade/14e0121b7ace47afa5022d5db6d0858c/master.svg?style=for-the-badge)](https://app.codacy.com/project/krostar/configue/dashboard)
+[![Code coverage](https://img.shields.io/codacy/coverage/14e0121b7ace47afa5022d5db6d0858c.svg?style=for-the-badge)](https://app.codacy.com/project/krostar/configue/dashboard)
+
 A simple yet useful configuration package.
 
 ## Motivation

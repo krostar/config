@@ -1,5 +1,3 @@
-// nolint: misspell
-
 package configue
 
 import (
@@ -32,7 +30,9 @@ func Load(cfg interface{}, opts ...Option) error {
 // Load tries to apply defaults to the provided interface (see the defaulter package) and
 // call all sources to load the configuration.
 func (c *Configue) Load(cfg interface{}) error {
-	defaulter.SetDefault(cfg)
+	if err := defaulter.SetDefault(cfg); err != nil {
+		return errors.Wrap(err, "unable to set defaults")
+	}
 
 	for _, source := range c.sources {
 		if err := c.loadSource(source, cfg); err != nil {

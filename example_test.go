@@ -26,7 +26,7 @@ func (c *SomeConfig) SetDefault() {
 func Example() {
 	var cfg Config
 
-	os.Setenv("MYAPP_SOMEOTHER_UNIVERSALANSWER", "1010") // nolint: errcheck
+	os.Setenv("MYAPP_SOMEOTHER_UNIVERSALANSWER", "1010") // nolint: errcheck, gosec
 
 	if err := configue.Load(&cfg, configue.WithSources(
 		sourceenv.New("myapp"),
