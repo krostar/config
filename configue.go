@@ -50,7 +50,7 @@ func (c *Configue) loadSource(source Source, cfg interface{}) error {
 	} else if s, ok := source.(SourceGetReprValueByKey); ok {
 		err = reflectThroughConfig(s, cfg)
 	} else {
-		err = trivialerr.New("%s does not fulfill any load interface", source.Name())
+		err = errors.Errorf("%s does not fulfill any load interface", source.Name())
 	}
 
 	if trivialerr.IsTrivial(errors.Cause(err)) {
