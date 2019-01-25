@@ -62,9 +62,6 @@ rules:
 
   key-duplicates: "enable"
 
-  key-ordering:
-    level: "warning"
-
   line-length:
     allow-non-breakable-inline-mappings: true
     allow-non-breakable-words: true

@@ -59,13 +59,13 @@ func TestFile_Unmarshal(t *testing.T) {
 		Hello string `json:"hello" yaml:"hello"`
 	}
 	var tests = map[string]struct {
-		createFile             bool
 		fileName               string
 		fileContent            string
-		ffOpts                 []Option
-		expectedTo             helloWorld
+		createFile             bool
 		expectedFailure        bool
 		expectedTrivialFailure bool
+		ffOpts                 []Option
+		expectedTo             helloWorld
 	}{
 		"file cannot be open, without lazy opts": {
 			fileName:               "file.toto",

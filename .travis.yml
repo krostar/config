@@ -1,0 +1,33 @@
+---
+
+dist: "xenial"
+language: "go"
+
+go: ["1.11.x"]
+
+matrix:
+  allow_failures:
+    - go: ["master"]
+  fast_finish: true
+
+git:
+  depth: 1
+
+env:
+  - "GO111MODULE=on"
+
+before_install:
+  - "go install github.com/golangci/golangci-lint/cmd/golangci-lint"
+  - "go install github.com/schrej/godacov"
+  - "pip install --user yamllint"
+
+install: true
+
+script:
+  - "make test-all"
+  - "make lint-all"
+
+after_success:
+  - godacov --token $CODACY_TOKEN --report ./build/cover/coverage.out --commit $TRAVIS_COMMIT
+
+...
