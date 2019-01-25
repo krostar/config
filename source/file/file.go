@@ -28,8 +28,7 @@ func NewSource(path string, opts ...Option) *File {
 		ext = strings.ToLower(ext[1:])
 	}
 
-	switch ext {
-	case "yml", "yaml":
+	if ext == "yml" {
 		ext = "yaml"
 	}
 
@@ -62,7 +61,7 @@ func (f *File) Unmarshal(to interface{}) error {
 			errors.Wrapf(err, "unable to open file %q", f.path),
 		)
 	}
-	defer ff.Close()
+	defer ff.Close() // nolint: errcheck, gosec
 
 	switch f.ext {
 	case "json":

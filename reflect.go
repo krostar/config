@@ -130,6 +130,7 @@ func fieldNamer(parentName string, childName string) string {
 	return strings.ToLower(childName)
 }
 
+// nolint: gocyclo
 func createNewValueOfType(repr []byte, typ reflect.Type) (*reflect.Value, error) {
 	if typ == nil {
 		return nil, errors.New("cannot create value of nil type")

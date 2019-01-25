@@ -8,6 +8,7 @@ issues:
 linters:
   disable:
     - "prealloc"
+    - "misspell" # due to the package name (configue)
   enable-all: true
 
 linters-settings:
