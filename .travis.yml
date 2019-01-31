@@ -1,33 +1,32 @@
 ---
 
 dist: "xenial"
-language: "go"
+language: "minimal"
 
-go: ["1.11.x"]
+service:
+  - "docker"
 
-matrix:
-  allow_failures:
-    - go: ["master"]
-  fast_finish: true
-
-git:
-  depth: 1
-
-env:
-  - "GO111MODULE=on"
-
-before_install:
-  - "go install github.com/golangci/golangci-lint/cmd/golangci-lint"
-  - "go install github.com/schrej/godacov"
-  - "pip install --user yamllint"
-
-install: true
+install:
+  - >-
+      make
+      docker-build-lint-dockerfile
+      docker-build-lint-go
+      docker-build-lint-sh
+      docker-build-lint-yaml
+      docker-build-test-go
+      docker-build-test-go-deps
+      -j 2
 
 script:
   - "make test-all"
-  - "make lint-all"
+  - "make lint-all -j 2"
 
 after_success:
-  - godacov --token $CODACY_TOKEN --report ./build/cover/coverage.out --commit $TRAVIS_COMMIT
+  - >-
+      make docker-publish-cover
+      DOCKER_RUN_ARGS="
+      --report ./build/cover/coverage.out
+      --token $CODACY_TOKEN
+      --commit $TRAVIS_COMMIT"
 
 ...
