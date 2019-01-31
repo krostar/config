@@ -1,0 +1,9 @@
+---
+
+plugins:
+  - "preset-lint-recommended"
+  - "lint-sentence-newline"
+  - "preset-lint-consistent"
+  - "lint-no-dead-urls"
+
+...

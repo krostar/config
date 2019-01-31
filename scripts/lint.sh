@@ -19,6 +19,13 @@ test::go() {
         --config "$(dirname "${BASH_SOURCE[0]}")/lint-go-config.yaml"
 }
 
+test::markdown() {
+    remark \
+        --rc-path "$(dirname "${BASH_SOURCE[0]}")/lint-markdown.yaml" \
+        --frail \
+        .
+}
+
 test::sh() {
     shellcheck \
         --check-sourced \
@@ -45,6 +52,9 @@ lint() {
         ;;
     "go")
         test::go
+        ;;
+    "markdown")
+        test::markdown
         ;;
     "sh")
         test::sh
