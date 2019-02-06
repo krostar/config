@@ -7,6 +7,8 @@ import (
 	"github.com/pkg/errors"
 )
 
+// customDuration's goals is to implement the unmarshalling
+// of time.Duration through the string or float representation.
 type customDuration time.Duration
 
 // ToDuration converts the custom duration back to the real time.Duration.

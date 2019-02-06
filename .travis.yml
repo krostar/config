@@ -6,25 +6,14 @@ language: "minimal"
 service:
   - "docker"
 
-install:
-  - >-
-      make
-      docker-build-lint-dockerfile
-      docker-build-lint-go
-      docker-build-lint-markdown
-      docker-build-lint-sh
-      docker-build-lint-yaml
-      docker-build-test-go
-      docker-build-test-go-deps
-      -j 2
-
 script:
   - "make test-all"
   - "make lint-all -j 2"
 
 after_success:
+  - "docker pull krostar/ci:publish-go-cover"
   - >-
-      make docker-publish-cover
+      make docker-publish-go-cover
       DOCKER_RUN_ARGS="
       --report ./build/cover/coverage.out
       --token $CODACY_TOKEN

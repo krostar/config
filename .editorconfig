@@ -17,9 +17,6 @@ spaces_around_brackets = both
 curly_bracket_next_line = false
 indent_brace_style = K&R
 
-[*.go]
-indent_style = tab
-
 [Makefile]
 indent_style = tab
 
@@ -28,3 +25,6 @@ indent_size = 2
 
 [*.md]
 trim_trailing_whitespace = false
+
+[*.go]
+indent_style = tab

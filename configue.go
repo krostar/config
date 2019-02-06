@@ -7,12 +7,12 @@ import (
 	"github.com/krostar/configue/trivialerr"
 )
 
-// Configue stores the configuration applied through options.
+// Configue stores the source configuration applied through options.
 type Configue struct {
 	sources []Source
 }
 
-// New creates a new Configue instance configured through options.
+// New creates a new config instance configured through options.
 func New(opts ...Option) *Configue {
 	var c Configue
 
