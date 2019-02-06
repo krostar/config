@@ -6,7 +6,7 @@ type Source interface {
 }
 
 // SourceGetReprValueByKey defines the way a source should
-// return a value based on a key.
+// return a representative value based on a key.
 type SourceGetReprValueByKey interface {
 	Source
 	GetReprValueByKey(key string) ([]byte, error)

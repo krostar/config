@@ -18,8 +18,4 @@
 /vendor.orig
 
 # Project-specific
-## binaries and build
-/build/cover
-
-## Development tools
-/.vscode
+/build

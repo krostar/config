@@ -14,8 +14,6 @@ func TestWithSources(t *testing.T) {
 	)
 
 	assert.Empty(t, c.sources)
-
 	WithSources(s1, s2)(&c)
-
 	assert.Len(t, c.sources, 2)
 }

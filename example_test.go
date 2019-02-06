@@ -10,16 +10,16 @@ import (
 
 type Config struct {
 	NoDefault string
-	Some      SomeConfig
-	SomeOther *SomeConfig
-	SomeLast  *SomeConfig
+	Some      OtherConfig
+	SomeOther *OtherConfig
+	SomeLast  *OtherConfig
 }
 
-type SomeConfig struct {
+type OtherConfig struct {
 	UniversalAnswer int
 }
 
-func (c *SomeConfig) SetDefault() {
+func (c *OtherConfig) SetDefault() {
 	c.UniversalAnswer = 42
 }
 

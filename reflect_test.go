@@ -46,7 +46,7 @@ func TestReflectThroughConfig(t *testing.T) {
 			"withdefaultvalue":                        []byte("I've been replaced"),
 			"withnestedstruct.withunexportedfield":    []byte("-30"),
 			"withnestedstruct.olleh":                  []byte("dlrow"),
-			"withnestedstruct.universalstranswer":     []byte("fourty-two"),
+			"withnestedstruct.universalstranswer":     []byte("forty-two"),
 			"withinterface":                           []byte("blih"),
 			"withnilpointer":                          []byte("I'm not nil anymore"),
 			"withpointer":                             []byte("42"),
@@ -72,7 +72,7 @@ func TestReflectThroughConfig(t *testing.T) {
 			WithNestedStruct: icfgNested{
 				withUnexportedField: 0,
 				WithCustomTag:       "dlrow",
-				UniversalStrAnswer:  "fourty-two",
+				UniversalStrAnswer:  "forty-two",
 			},
 			WithInterface:        "blih",
 			WithNilPointer:       &str,
