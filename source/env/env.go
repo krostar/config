@@ -4,10 +4,10 @@ import (
 	"os"
 	"strings"
 
-	"github.com/krostar/configue/trivialerr"
+	"github.com/krostar/config/trivialerr"
 )
 
-// Env implements configue.Source to fetch values from env
+// Env implements config.Source to fetch values from env
 // based on the value's key.
 type Env struct {
 	prefix string
@@ -20,7 +20,7 @@ func New(prefix string) *Env {
 	}
 }
 
-// Name implements configue.Source interface.
+// Name implements config.Source interface.
 func (e *Env) Name() string {
 	return "env"
 }

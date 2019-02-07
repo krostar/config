@@ -9,10 +9,10 @@ import (
 	"github.com/spf13/afero"
 	yaml "gopkg.in/yaml.v2"
 
-	"github.com/krostar/configue/trivialerr"
+	"github.com/krostar/config/trivialerr"
 )
 
-// File implements configue.Source to fetch values from a file.
+// File implements config.Source to fetch values from a file.
 type File struct {
 	fs              afero.Fs
 	path            string
@@ -47,7 +47,7 @@ func NewSource(path string, opts ...Option) *File {
 	return &ff
 }
 
-// Name implements configue.Source interface.
+// Name implements config.Source interface.
 func (f *File) Name() string {
 	return "file"
 }

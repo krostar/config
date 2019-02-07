@@ -1,4 +1,4 @@
-module github.com/krostar/configue
+module github.com/krostar/config
 
 require (
 	github.com/pkg/errors v0.8.1

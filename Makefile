@@ -10,11 +10,11 @@ help:
 	@grep -E '^[%a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: lint-all test-all
-lint-all: docker-lint-markdown docker-lint-yaml ## Run all possible linters
+lint-all: docker-lint-go docker-lint-markdown docker-lint-yaml ## Run all possible linters
 test-all: docker-test-go docker-test-go-deps	## Run all possible tests
 
-.PHONY: lint-markdown lint-yaml
-# lint-go: docker-lint-go					## Lint go files
+.PHONY: lint-go lint-markdown lint-yaml
+lint-go: docker-lint-go					## Lint go files
 lint-markdown: docker-lint-markdown		## Lint markdown files
 lint-yaml: docker-lint-yaml				## Lint yaml files
 

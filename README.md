@@ -1,12 +1,12 @@
-# configue
+# config
 
-[![godoc](https://img.shields.io/badge/godoc-reference-blue.svg?style=for-the-badge)](https://godoc.org/github.com/krostar/configue)
-[![Licence](https://img.shields.io/github/license/krostar/configue.svg?style=for-the-badge)](https://tldrlegal.com/license/mit-license)
-![Latest version](https://img.shields.io/github/tag/krostar/configue.svg?style=for-the-badge)
+[![godoc](https://img.shields.io/badge/godoc-reference-blue.svg?style=for-the-badge)](https://godoc.org/github.com/krostar/config)
+[![Licence](https://img.shields.io/github/license/krostar/config.svg?style=for-the-badge)](https://tldrlegal.com/license/mit-license)
+![Latest version](https://img.shields.io/github/tag/krostar/config.svg?style=for-the-badge)
 
-[![Build Status](https://img.shields.io/travis/krostar/configue/master.svg?style=for-the-badge)](https://travis-ci.org/krostar/configue)
-[![Code quality](https://img.shields.io/codacy/grade/14e0121b7ace47afa5022d5db6d0858c/master.svg?style=for-the-badge)](https://app.codacy.com/project/krostar/configue/dashboard)
-[![Code coverage](https://img.shields.io/codacy/coverage/14e0121b7ace47afa5022d5db6d0858c.svg?style=for-the-badge)](https://app.codacy.com/project/krostar/configue/dashboard)
+[![Build Status](https://img.shields.io/travis/krostar/config/master.svg?style=for-the-badge)](https://travis-ci.org/krostar/config)
+[![Code quality](https://img.shields.io/codacy/grade/4369c8e78a3e4fd995bac6b963c500b3/master.svg?style=for-the-badge)](https://app.codacy.com/project/krostar/config/dashboard)
+[![Code coverage](https://img.shields.io/codacy/coverage/4369c8e78a3e4fd995bac6b963c500b3.svg?style=for-the-badge)](https://app.codacy.com/project/krostar/config/dashboard)
 
 A simple yet powerfull configuration package.
 
@@ -35,7 +35,7 @@ That's what I tried to do in this configuration package which is made of 3 compo
 -   the default setter (the `defaulter` package) which handles defaults
 -   the sources (anything that implements one of the two sources interfaces) responsible for
         the retrieval of the configuration
--   the "loader" (the `configue` package) which is responsible to set the `default` if any
+-   the "loader" (the `config` package) which is responsible to set the `default` if any
         and to call each `sources`
 
 ## Usage / examples
@@ -76,7 +76,7 @@ func main() {
 }
 ```
 
-More doc and examples in the configue's [godoc](https://godoc.org/github.com/krostar/config)
+More doc and examples in the config's [godoc](https://godoc.org/github.com/krostar/config)
 
 ## License
 

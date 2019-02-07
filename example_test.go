@@ -1,11 +1,11 @@
-package configue_test
+package config_test
 
 import (
 	"fmt"
 	"os"
 
-	"github.com/krostar/configue"
-	sourceenv "github.com/krostar/configue/source/env"
+	"github.com/krostar/config"
+	sourceenv "github.com/krostar/config/source/env"
 )
 
 type Config struct {
@@ -28,7 +28,7 @@ func Example() {
 
 	os.Setenv("MYAPP_SOMEOTHER_UNIVERSALANSWER", "1010") // nolint: errcheck, gosec
 
-	if err := configue.Load(&cfg, configue.WithSources(
+	if err := config.Load(&cfg, config.WithSources(
 		sourceenv.New("myapp"),
 	)); err != nil {
 		panic(err)

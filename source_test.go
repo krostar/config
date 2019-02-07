@@ -1,6 +1,6 @@
-package configue
+package config
 
-import "github.com/krostar/configue/trivialerr"
+import "github.com/krostar/config/trivialerr"
 
 type stubSourceThatUseReflection map[string][]byte
 
