@@ -1,4 +1,4 @@
-package configue
+package config
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/krostar/configue/trivialerr"
+	"github.com/krostar/config/trivialerr"
 )
 
 func reflectThroughConfig(source SourceGetReprValueByKey, cfg interface{}) error {

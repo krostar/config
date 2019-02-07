@@ -3,7 +3,7 @@ package defaulter_test
 import (
 	"fmt"
 
-	"github.com/krostar/configue/defaulter"
+	"github.com/krostar/config/defaulter"
 )
 
 type HTTPConfig struct {

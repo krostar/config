@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/krostar/configue/trivialerr"
+	"github.com/krostar/config/trivialerr"
 )
 
 func TestNewSource(t *testing.T) {

@@ -1,20 +1,20 @@
-package configue
+package config
 
 import (
 	"github.com/pkg/errors"
 
-	"github.com/krostar/configue/defaulter"
-	"github.com/krostar/configue/trivialerr"
+	"github.com/krostar/config/defaulter"
+	"github.com/krostar/config/trivialerr"
 )
 
-// Configue stores the source configuration applied through options.
-type Configue struct {
+// Config stores the source configuration applied through options.
+type Config struct {
 	sources []Source
 }
 
 // New creates a new config instance configured through options.
-func New(opts ...Option) *Configue {
-	var c Configue
+func New(opts ...Option) *Config {
+	var c Config
 
 	for _, opt := range opts {
 		opt(&c)
@@ -22,14 +22,14 @@ func New(opts ...Option) *Configue {
 	return &c
 }
 
-// Load creates a new instance (see New), and call the Load method of it (see Configue.Load).
+// Load creates a new instance (see New), and call the Load method of it (see Config.Load).
 func Load(cfg interface{}, opts ...Option) error {
 	return New(opts...).Load(cfg)
 }
 
 // Load tries to apply defaults to the provided interface (see the defaulter package) and
 // call all sources to load the configuration.
-func (c *Configue) Load(cfg interface{}) error {
+func (c *Config) Load(cfg interface{}) error {
 	if err := defaulter.SetDefault(cfg); err != nil {
 		return errors.Wrap(err, "unable to set defaults")
 	}
@@ -42,7 +42,7 @@ func (c *Configue) Load(cfg interface{}) error {
 	return nil
 }
 
-func (c *Configue) loadSource(source Source, cfg interface{}) error {
+func (c *Config) loadSource(source Source, cfg interface{}) error {
 	var err error
 
 	if s, ok := source.(SourceUnmarshal); ok {

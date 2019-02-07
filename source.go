@@ -1,4 +1,4 @@
-package configue
+package config
 
 // Source defines the interface any source should implements.
 type Source interface {

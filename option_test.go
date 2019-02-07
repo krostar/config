@@ -1,4 +1,4 @@
-package configue
+package config
 
 import (
 	"testing"
@@ -8,7 +8,7 @@ import (
 
 func TestWithSources(t *testing.T) {
 	var (
-		c  Configue
+		c  Config
 		s1 Source
 		s2 Source
 	)
