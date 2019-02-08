@@ -27,7 +27,7 @@ test-go-fast: docker-test-go-fast				## Fast test co code
 # specify a special reusable volume for go-related docker builds
 docker-%-go: DOCKER_RUN_OPTS += --mount type=volume,source='gomodcache',target='/go/pkg/mod/'
 docker-%:
-	@docker run \
+	@docker --log-level warn run \
 		--rm \
 		--tty \
 		--mount type=bind,source="$(DIR_ABS)",target=/app \
