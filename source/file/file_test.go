@@ -11,7 +11,7 @@ import (
 	"github.com/krostar/config/trivialerr"
 )
 
-func TestNewSource(t *testing.T) {
+func TestNew(t *testing.T) {
 	var tests = map[string]struct {
 		path              string
 		opts              []Option
@@ -45,7 +45,7 @@ func TestNewSource(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 
-			file := NewSource(test.path, test.opts...)
+			file := New(test.path, test.opts...)
 			assert.Equal(t, test.expectedPath, file.path)
 			assert.Equal(t, test.expectedExtension, file.ext)
 			assert.True(t, file.strictOpen)
@@ -118,7 +118,7 @@ func TestFile_Unmarshal(t *testing.T) {
 			var (
 				fs   = afero.NewMemMapFs()
 				opts = append(test.ffOpts, func(f *File) { f.fs = fs })
-				file = NewSource(test.fileName, opts...)
+				file = New(test.fileName, opts...)
 				to   helloWorld
 			)
 
@@ -143,5 +143,5 @@ func TestFile_Unmarshal(t *testing.T) {
 }
 
 func TestFile_Name(t *testing.T) {
-	require.Equal(t, "file", NewSource("").Name())
+	require.Equal(t, "file", New("").Name())
 }

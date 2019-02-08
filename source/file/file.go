@@ -21,8 +21,8 @@ type File struct {
 	strictOpen      bool
 }
 
-// NewSource returns a new file source.
-func NewSource(path string, opts ...Option) *File {
+// New returns a new file source.
+func New(path string, opts ...Option) *File {
 	var ext = filepath.Ext(path)
 	if ext != "" {
 		ext = strings.ToLower(ext[1:])

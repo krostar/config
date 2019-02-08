@@ -7,7 +7,7 @@ import (
 )
 
 func TestMayNotExist(t *testing.T) {
-	var f = NewSource("")
+	var f = New("")
 
 	assert.True(t, f.strictOpen)
 	MayNotExist()(f)
@@ -15,7 +15,7 @@ func TestMayNotExist(t *testing.T) {
 }
 
 func TestFailOnUnknownFields(t *testing.T) {
-	var f = NewSource("")
+	var f = New("")
 
 	assert.False(t, f.strictUnmarshal)
 	FailOnUnknownFields()(f)
