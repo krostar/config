@@ -62,7 +62,7 @@ func main() {
 
     var cfg HTTPConfig
 
-    if err := config.Load(&cfg, config.WithSources(config.Sources{
+    if err := config.Load(&cfg, config.WithSources(config.Source{
         sourcefile.New("./conf.json"),
         sourceenv.New("prefix"),
     })); err != nil {
