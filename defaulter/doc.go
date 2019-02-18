@@ -19,10 +19,11 @@ Considering the following structure:
 		f.IsAvailable = true
 	}
 
-
 	type (
 		Color string
+	)
 
+	const (
 		ColorUnknown = Color("unknown")
 		ColorBlack   = Color("black")
 		ColorGreen   = Color("green")
