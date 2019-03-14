@@ -27,6 +27,7 @@ test-go-fast: docker-test-go-fast				## Fast test co code
 # specify a special reusable volume for go-related docker builds
 docker-%-go: DOCKER_RUN_OPTS += --mount type=volume,source='gomodcache',target='/go/pkg/mod/'
 docker-%:
+	@docker pull "krostar/ci:$*" 2>&1 > /dev/null
 	@docker --log-level warn run \
 		--rm \
 		--tty \
