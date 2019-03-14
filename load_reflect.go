@@ -12,7 +12,7 @@ import (
 	"github.com/krostar/config/trivialerr"
 )
 
-func reflectThroughConfig(source SourceGetReprValueByKey, cfg interface{}) error {
+func loadThroughReflection(source SourceGetReprValueByKey, cfg interface{}) error {
 	var value = reflect.ValueOf(cfg)
 
 	if value.IsNil() {
@@ -20,26 +20,26 @@ func reflectThroughConfig(source SourceGetReprValueByKey, cfg interface{}) error
 	}
 
 	value = reflect.Indirect(value.Elem())
-	if _, err := reflectRecursivly(source, "", &value); err != nil {
+	if _, err := loadReflectRecursivly(source, "", &value); err != nil {
 		return err
 	}
 	return nil
 }
 
-func reflectRecursivly(source SourceGetReprValueByKey, name string, v *reflect.Value) (bool, error) {
+func loadReflectRecursivly(source SourceGetReprValueByKey, name string, v *reflect.Value) (bool, error) {
 	switch v.Kind() {
 	case reflect.Invalid:
 		return false, errors.New("value is invalid")
 	case reflect.Ptr:
-		return reflectHandlePointer(source, name, v)
+		return loadReflectHandlePointer(source, name, v)
 	case reflect.Struct:
-		return reflectHandleStruct(source, name, v)
+		return loadReflectHandleStruct(source, name, v)
 	default:
-		return reflectHandleDefault(source, name, v)
+		return loadReflectHandleDefault(source, name, v)
 	}
 }
 
-func reflectHandlePointer(source SourceGetReprValueByKey, name string, v *reflect.Value) (bool, error) {
+func loadReflectHandlePointer(source SourceGetReprValueByKey, name string, v *reflect.Value) (bool, error) {
 	var validV = *v
 
 	// if we have a nil pointor, build a non-nil one
@@ -51,7 +51,7 @@ func reflectHandlePointer(source SourceGetReprValueByKey, name string, v *reflec
 	newV := validV.Elem()
 
 	// go recursively with the pointed value
-	if isSet, err := reflectRecursivly(source, name, &newV); err != nil || !isSet {
+	if isSet, err := loadReflectRecursivly(source, name, &newV); err != nil || !isSet {
 		return false, err
 	}
 
@@ -63,7 +63,7 @@ func reflectHandlePointer(source SourceGetReprValueByKey, name string, v *reflec
 	return true, nil
 }
 
-func reflectHandleStruct(source SourceGetReprValueByKey, name string, v *reflect.Value) (bool, error) {
+func loadReflectHandleStruct(source SourceGetReprValueByKey, name string, v *reflect.Value) (bool, error) {
 	const tagKey = "cfg"
 	var oneIsSet = false
 
@@ -86,7 +86,7 @@ func reflectHandleStruct(source SourceGetReprValueByKey, name string, v *reflect
 		}
 
 		// recursive call with the value
-		if isSet, err := reflectRecursivly(source, childName, &childV); err == nil {
+		if isSet, err := loadReflectRecursivly(source, childName, &childV); err == nil {
 			if isSet {
 				oneIsSet = true
 			}
@@ -97,7 +97,7 @@ func reflectHandleStruct(source SourceGetReprValueByKey, name string, v *reflect
 	return oneIsSet, nil
 }
 
-func reflectHandleDefault(source SourceGetReprValueByKey, name string, v *reflect.Value) (bool, error) {
+func loadReflectHandleDefault(source SourceGetReprValueByKey, name string, v *reflect.Value) (bool, error) {
 	// asks nicely if source has a value for this key
 	repr, err := source.GetReprValueByKey(name)
 

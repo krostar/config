@@ -48,7 +48,7 @@ func (c *Config) loadSource(source Source, cfg interface{}) error {
 	if s, ok := source.(SourceUnmarshal); ok {
 		err = s.Unmarshal(cfg)
 	} else if s, ok := source.(SourceGetReprValueByKey); ok {
-		err = reflectThroughConfig(s, cfg)
+		err = loadThroughReflection(s, cfg)
 	} else {
 		err = errors.Errorf("%s does not fulfill any load interface", source.Name())
 	}

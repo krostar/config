@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestReflectThroughConfig(t *testing.T) {
+func TestLoadThroughReflection(t *testing.T) {
 	type (
 		icfgNested struct {
 			withUnexportedField int
@@ -82,7 +82,7 @@ func TestReflectThroughConfig(t *testing.T) {
 		}
 	)
 
-	err := reflectThroughConfig(source, &cfg)
+	err := loadThroughReflection(source, &cfg)
 	require.NoError(t, err)
 	assert.Equal(t, expectedCfg, cfg)
 }

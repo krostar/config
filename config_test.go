@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestLoad(t *testing.T) {
+func TestLoad_success(t *testing.T) {
 	type (
 		icfgNested struct {
 			withUnexportedField int
@@ -72,4 +72,21 @@ func TestLoad(t *testing.T) {
 	err := Load(&cfg, WithSources(source))
 	require.NoError(t, err)
 	assert.Equal(t, expectedCfg, cfg)
+}
+
+func TestLoad_failures(t *testing.T) {
+	var cfg interface{}
+
+	// nil receiver
+	require.Error(t, Load(nil))
+	// non-ptr receiver
+	require.Error(t, Load(cfg))
+	// unknown type of source
+	require.Error(t, Load(&cfg, WithSources(&dumbSource{})))
+	// source that returns no errors
+	require.NoError(t, Load(&cfg, WithSources(stubSourceThatUnmarshal(0))))
+	// source that returns a trivial error
+	require.NoError(t, Load(&cfg, WithSources(stubSourceThatUnmarshal(-1))))
+	// source that returns a real error
+	require.Error(t, Load(&cfg, WithSources(stubSourceThatUnmarshal(1))))
 }
