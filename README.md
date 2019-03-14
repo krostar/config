@@ -55,6 +55,13 @@ func (c *HTTPConfig) SetDefault() {
     c.RequestTimeout = 3 * time.Second
 }
 
+// Validate checks whenever the config is properly set.
+func (c *HTTPConfig) Validate() error {
+    if c.RequestTimeout < time.Second {
+        return errors.New("request timeout is too short (min 1s)")
+    }
+}
+
 func main() {
     // export PREFIX_DEBUG="true"
     // export PREFIX_MACSECRET="secret"
@@ -66,6 +73,10 @@ func main() {
         sourcefile.New("./conf.json"),
         sourceenv.New("prefix"),
     })); err != nil {
+        panic(err)
+    }
+
+    if err := config.Validate(&cfg); err != nil {
         panic(err)
     }
 

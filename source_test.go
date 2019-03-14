@@ -37,3 +37,7 @@ func (s stubSourceThatUnmarshal) Unmarshal(interface{}) error {
 	}
 	return err
 }
+
+type dumbSource struct{}
+
+func (dumbSource) Name() string { return "dumb" }
