@@ -9,9 +9,13 @@ service:
 script:
   - "make test-all"
   - "make lint-all -j 2"
+  - >-
+      docker images
+      --filter "reference=krostar/ci"
+      --no-trunc
+      --format 'table {{ .Tag }}\t{{.ID}}\t{{.Digest}}'
 
 after_success:
-  - "docker pull krostar/ci:publish-go-cover"
   - >-
       make docker-publish-go-cover
       DOCKER_RUN_ARGS="
