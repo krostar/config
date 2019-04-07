@@ -7,7 +7,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/spf13/afero"
-	yaml "gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v3"
 
 	"github.com/krostar/config/trivialerr"
 )
@@ -72,9 +72,6 @@ func (f *File) Unmarshal(to interface{}) error {
 		err = decoder.Decode(to)
 	case "yaml":
 		var decoder = yaml.NewDecoder(ff)
-		if f.strictUnmarshal {
-			decoder.SetStrict(f.strictUnmarshal)
-		}
 		err = decoder.Decode(to)
 	default:
 		err = errors.Errorf("%q extension is not supported", f.ext)

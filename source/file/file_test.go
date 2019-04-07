@@ -1,7 +1,6 @@
 package sourcefile
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/spf13/afero"
@@ -101,12 +100,6 @@ func TestFile_Unmarshal(t *testing.T) {
 			expectedTo: helloWorld{
 				Hello: "world",
 			},
-		}, "strict yaml file": {
-			createFile:      true,
-			fileName:        "file.yaml",
-			fileContent:     fmt.Sprintf("hello: \"world\"\nworld: \"hello\""),
-			ffOpts:          []Option{FailOnUnknownFields()},
-			expectedFailure: true,
 		},
 	}
 
