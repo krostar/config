@@ -13,7 +13,20 @@ func TestWithSources(t *testing.T) {
 		s2 Source
 	)
 
-	assert.Empty(t, c.sources)
 	WithSources(s1, s2)(&c)
 	assert.Len(t, c.sources, 2)
+	assert.Equal(t, []Source{s1, s2}, c.sources)
+}
+
+func TestWithSourcesPrepend(t *testing.T) {
+	var (
+		c  Config
+		s1 = dumbSource{}
+		s2 = dumbSource{}
+	)
+
+	WithSources(s1)(&c)
+	WithSourcesPrepend(s2)(&c)
+	assert.Len(t, c.sources, 2)
+	assert.Equal(t, []Source{s2, s1}, c.sources)
 }

@@ -29,7 +29,11 @@ func Load(cfg interface{}, opts ...Option) error {
 
 // Load tries to apply defaults to the provided interface (see the defaulter package) and
 // call all sources to load the configuration.
-func (c *Config) Load(cfg interface{}) error {
+func (c *Config) Load(cfg interface{}, opts ...Option) error {
+	for _, opt := range opts {
+		opt(c)
+	}
+
 	if err := defaulter.SetDefault(cfg); err != nil {
 		return errors.Wrap(err, "unable to set defaults")
 	}

@@ -90,3 +90,17 @@ func TestLoad_failures(t *testing.T) {
 	// source that returns a real error
 	require.Error(t, Load(&cfg, WithSources(stubSourceThatUnmarshal(1))))
 }
+
+func TestConfig_Load_opts_applied(t *testing.T) {
+	var (
+		cfg int
+		s1  = dumbSource{}
+		s2  = dumbSource{}
+	)
+	var c = New(WithSources(s2))
+
+	// this is gonna fail as dumbSource does not really implement a usesable source
+	assert.Error(t, c.Load(&cfg, WithSourcesPrepend(s1)))
+
+	assert.Equal(t, []Source{s1, s2}, c.sources)
+}
