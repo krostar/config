@@ -100,6 +100,12 @@ func TestFile_Unmarshal(t *testing.T) {
 			expectedTo: helloWorld{
 				Hello: "world",
 			},
+		}, "strict yaml file": {
+			createFile:      true,
+			fileName:        "file.yaml",
+			fileContent:     `hell: "world"`,
+			ffOpts:          []Option{FailOnUnknownFields()},
+			expectedFailure: true,
 		},
 	}
 

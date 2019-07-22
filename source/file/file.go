@@ -70,6 +70,9 @@ func (f *File) Unmarshal(to interface{}) error {
 		err = decoder.Decode(to)
 	case "yaml":
 		var decoder = yaml.NewDecoder(ff)
+		if f.strictUnmarshal {
+			decoder.KnownFields(true)
+		}
 		err = decoder.Decode(to)
 	default:
 		err = errors.Errorf("%q extension is not supported", f.ext)
