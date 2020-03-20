@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/krostar/config/trivialerr"
+	"github.com/krostar/config/internal/trivialerr"
 )
 
 func TestEnv_GetReprValueByKey(t *testing.T) {

@@ -3,7 +3,7 @@ package config
 import (
 	"errors"
 
-	"github.com/krostar/config/trivialerr"
+	"github.com/krostar/config/internal/trivialerr"
 )
 
 type stubSourceThatUseReflection map[string][]byte

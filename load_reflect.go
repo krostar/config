@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/krostar/config/trivialerr"
+	"github.com/krostar/config/internal/trivialerr"
 )
 
 func loadThroughReflection(source SourceGetReprValueByKey, cfg interface{}) error {

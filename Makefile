@@ -36,5 +36,5 @@ ci-%:
 		--rm												\
 		--mount type=bind,source="$(DIR_ABS)",target=/app	\
 		$(DOCKER_RUN_OPTS)									\
-		"krostar/ci:$(*)"									\
+		"krostar/ci:$(*).v1.3.0"							\
 		$(DOCKER_RUN_ARGS)

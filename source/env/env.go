@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/krostar/config/trivialerr"
+	"github.com/krostar/config/internal/trivialerr"
 )
 
 // Env implements config.Source to fetch values from env

@@ -26,12 +26,13 @@ func Wrap(err error) error {
 // only if strict is false. Otherwise its returning
 // the original error.
 func WrapIf(strict bool, err error) error {
+	if err == nil {
+		return nil
+	}
 	if strict {
 		return err
 	}
-	return trivialError{
-		err: err,
-	}
+	return trivialError{err: err}
 }
 
 // IsTrivial returns true if error implements IsTrivial,

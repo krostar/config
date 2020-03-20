@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/krostar/config/defaulter"
-	"github.com/krostar/config/trivialerr"
+	"github.com/krostar/config/internal/trivialerr"
 )
 
 // Config stores the source configuration applied through options.

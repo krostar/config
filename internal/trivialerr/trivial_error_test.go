@@ -22,7 +22,12 @@ func TestWrap(t *testing.T) {
 func TestWrapIf(t *testing.T) {
 	var originalErr = errors.New("hello")
 
-	err := WrapIf(true, originalErr)
+	err := WrapIf(false, nil)
+	assert.Nil(t, err)
+	err = WrapIf(true, nil)
+	assert.Nil(t, err)
+
+	err = WrapIf(true, originalErr)
 	assert.Equal(t, err, originalErr)
 
 	err = WrapIf(false, originalErr)
