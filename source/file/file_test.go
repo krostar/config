@@ -57,6 +57,7 @@ func TestFile_Unmarshal(t *testing.T) {
 	type helloWorld struct {
 		Hello string `json:"hello" yaml:"hello"`
 	}
+
 	var tests = map[string]struct {
 		fileName               string
 		fileContent            string

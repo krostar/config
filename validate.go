@@ -1,9 +1,8 @@
 package config
 
 import (
+	"errors"
 	"reflect"
-
-	"github.com/pkg/errors"
 )
 
 type validateFunc interface {
@@ -29,6 +28,7 @@ func Validate(i interface{}) error {
 	if len(errs) > 0 {
 		return errs
 	}
+
 	return nil
 }
 

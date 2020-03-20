@@ -1,3 +1,4 @@
+// Package sourceenv sources configuration from env.
 package sourceenv
 
 import (
@@ -27,7 +28,8 @@ func (e *Env) Name() string {
 
 func (e *Env) keyFormatter(key string) string {
 	const sep = "_"
-	return strings.NewReplacer(".", sep, "/", sep, "-", "", ",", "").
+	return strings.
+		NewReplacer(".", sep, "/", sep, "-", "", ",", "").
 		Replace(strings.ToUpper(e.prefix + "_" + key))
 }
 
@@ -36,6 +38,7 @@ func (e *Env) keyFormatter(key string) string {
 // It never returns another kind of error.
 func (e *Env) GetReprValueByKey(key string) ([]byte, error) {
 	key = e.keyFormatter(key)
+
 	env, exists := os.LookupEnv(key)
 	if !exists {
 		return nil, trivialerr.New("env does not contain key %s", key)

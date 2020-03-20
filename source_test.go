@@ -1,15 +1,14 @@
 package config
 
 import (
+	"errors"
+
 	"github.com/krostar/config/trivialerr"
-	"github.com/pkg/errors"
 )
 
 type stubSourceThatUseReflection map[string][]byte
 
-func (s stubSourceThatUseReflection) Name() string {
-	return "stub reflect"
-}
+func (s stubSourceThatUseReflection) Name() string { return "stub reflect" }
 
 func (s stubSourceThatUseReflection) GetReprValueByKey(name string) ([]byte, error) {
 	for key, resp := range s {
@@ -22,9 +21,7 @@ func (s stubSourceThatUseReflection) GetReprValueByKey(name string) ([]byte, err
 
 type stubSourceThatUnmarshal int
 
-func (s stubSourceThatUnmarshal) Name() string {
-	return "stub unmarshal"
-}
+func (s stubSourceThatUnmarshal) Name() string { return "stub unmarshal" }
 
 func (s stubSourceThatUnmarshal) Unmarshal(interface{}) error {
 	var err error
@@ -35,6 +32,7 @@ func (s stubSourceThatUnmarshal) Unmarshal(interface{}) error {
 	case s > 0:
 		err = errors.New("not found")
 	}
+
 	return err
 }
 

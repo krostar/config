@@ -15,6 +15,7 @@ func (v ValidateError) String() string {
 	if len(v) == 0 {
 		return "no validation errors"
 	}
+
 	var errors []string
 	for key, value := range v {
 		if key == "" {

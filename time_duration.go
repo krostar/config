@@ -2,9 +2,9 @@ package config
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
 	"time"
-
-	"github.com/pkg/errors"
 )
 
 // customDuration's goals is to implement the unmarshalling
@@ -30,7 +30,7 @@ func (cd *customDuration) MarshalJSON() ([]byte, error) {
 func (cd *customDuration) UnmarshalJSON(b []byte) error {
 	var v interface{}
 	if err := json.Unmarshal(b, &v); err != nil {
-		return errors.Wrap(err, "json failed to unmarshal to v")
+		return fmt.Errorf("json failed to unmarshal to v: %w", err)
 	}
 
 	var (

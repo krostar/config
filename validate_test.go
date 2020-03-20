@@ -1,13 +1,12 @@
 package config
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
-
-	"github.com/pkg/errors"
 )
 
 type validateCustom struct{ mock.Mock }

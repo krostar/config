@@ -2,12 +2,12 @@ package config
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
 	"reflect"
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/pkg/errors"
 
 	"github.com/krostar/config/trivialerr"
 )
@@ -23,6 +23,7 @@ func loadThroughReflection(source SourceGetReprValueByKey, cfg interface{}) erro
 	if _, err := loadReflectRecursivly(source, "", &value); err != nil {
 		return err
 	}
+
 	return nil
 }
 
@@ -59,6 +60,7 @@ func loadReflectHandlePointer(source SourceGetReprValueByKey, name string, v *re
 	if !v.CanSet() {
 		return false, errors.New("value is not settable")
 	}
+
 	v.Set(validV)
 	return true, nil
 }
@@ -94,6 +96,7 @@ func loadReflectHandleStruct(source SourceGetReprValueByKey, name string, v *ref
 			return isSet, err
 		}
 	}
+
 	return oneIsSet, nil
 }
 
@@ -104,7 +107,7 @@ func loadReflectHandleDefault(source SourceGetReprValueByKey, name string, v *re
 	// if source failed, leave
 	if err != nil {
 		if !trivialerr.IsTrivial(err) {
-			return false, errors.Wrapf(err, "unable to get value for key %q", name)
+			return false, fmt.Errorf("unable to get value for key %q: %w", name, err)
 		}
 		return false, nil
 	}
@@ -112,7 +115,7 @@ func loadReflectHandleDefault(source SourceGetReprValueByKey, name string, v *re
 	// otherwise try to use the value found
 	var newValue *reflect.Value
 	if newValue, err = createNewValueOfType(repr, v.Type()); err != nil {
-		return false, errors.Wrapf(err, "unable to convert value for key %q", name)
+		return false, fmt.Errorf("unable to convert value for key %q: %w", name, err)
 	}
 
 	if !v.CanSet() {
@@ -178,13 +181,13 @@ func createNewValueOfType(repr []byte, typ reflect.Type) (*reflect.Value, error)
 		// and manually set the value.
 		var cd customDuration
 		if err := json.Unmarshal(repr, &cd); err != nil {
-			sErr = errors.Wrap(err, "custom duration unmarshal failed")
+			sErr = fmt.Errorf("custom duration unmarshal failed: %w", err)
 			break
 		}
 		v.SetInt(cd.ToInt64())
 	default:
 		if err := json.Unmarshal(repr, vPtr.Interface()); err != nil {
-			sErr = errors.Wrap(err, "json marshaller failed to fill the value")
+			sErr = fmt.Errorf("json marshaller failed to fill the value: %w", err)
 			break
 		}
 	}

@@ -1,10 +1,10 @@
 package config
 
 import (
+	"errors"
 	"strings"
 	"testing"
 
-	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -1,7 +1,8 @@
+// Package config is a light yet powerful config loader.
 package config
 
 import (
-	"github.com/pkg/errors"
+	"fmt"
 
 	"github.com/krostar/config/defaulter"
 	"github.com/krostar/config/trivialerr"
@@ -19,6 +20,7 @@ func New(opts ...Option) *Config {
 	for _, opt := range opts {
 		opt(&c)
 	}
+
 	return &c
 }
 
@@ -35,14 +37,15 @@ func (c *Config) Load(cfg interface{}, opts ...Option) error {
 	}
 
 	if err := defaulter.SetDefault(cfg); err != nil {
-		return errors.Wrap(err, "unable to set defaults")
+		return fmt.Errorf("unable to set defaults: %w", err)
 	}
 
 	for _, source := range c.sources {
 		if err := c.loadSource(source, cfg); err != nil {
-			return errors.Wrap(err, "failed to load configuration")
+			return fmt.Errorf("failed to load configuration: %w", err)
 		}
 	}
+
 	return nil
 }
 
@@ -54,11 +57,12 @@ func (c *Config) loadSource(source Source, cfg interface{}) error {
 	} else if s, ok := source.(SourceGetReprValueByKey); ok {
 		err = loadThroughReflection(s, cfg)
 	} else {
-		err = errors.Errorf("%s does not fulfill any load interface", source.Name())
+		err = fmt.Errorf("%s does not fulfill any load interface", source.Name())
 	}
 
-	if trivialerr.IsTrivial(errors.Cause(err)) {
+	if trivialerr.IsTrivial(err) {
 		return nil
 	}
+
 	return err
 }

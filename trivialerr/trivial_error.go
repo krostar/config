@@ -1,6 +1,10 @@
+// Package trivialerr helps to define and use trivial (not critical) errors.
 package trivialerr
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 // TrivialError defines the way a trivial error is defined.
 type TrivialError interface {
@@ -33,7 +37,8 @@ func WrapIf(strict bool, err error) error {
 // IsTrivial returns true if error implements IsTrivial,
 // and if err.IsTrivial is true.
 func IsTrivial(err error) bool {
-	if tErr, ok := err.(TrivialError); ok && tErr.IsTrivial() {
+	var trivErr TrivialError
+	if errors.As(err, &trivErr) && trivErr.IsTrivial() {
 		return true
 	}
 	return false
@@ -44,11 +49,10 @@ type trivialError struct {
 }
 
 // Error implements error.
-func (te trivialError) Error() string {
-	return te.err.Error()
-}
+func (te trivialError) Error() string { return te.err.Error() }
+
+// Unwrap implements errors.Unwrap.
+func (te trivialError) Unwrap() error { return te.err }
 
 // IsTrivial implements IsTrivial.
-func (te trivialError) IsTrivial() bool {
-	return true
-}
+func (te trivialError) IsTrivial() bool { return true }
