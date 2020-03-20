@@ -21,9 +21,9 @@ func Validate(i interface{}) error {
 	// as i is actually an interface, just get the thing behind the interface
 	value = reflect.Indirect(value.Elem())
 
-	var errs = make(ValidateError)
+	var errs = make(ValidationError)
 	// recursively walk through it to see if it's valid
-	validateThrough(&value, "", errs)
+	validateRecursively(&value, "", errs)
 
 	if len(errs) > 0 {
 		return errs
@@ -32,7 +32,7 @@ func Validate(i interface{}) error {
 	return nil
 }
 
-func validateThrough(v *reflect.Value, name string, errs ValidateError) {
+func validateRecursively(v *reflect.Value, name string, errs ValidationError) {
 	switch v.Kind() {
 	case reflect.Ptr:
 		// we don't want to put default on nil pointed value so just leave here
@@ -44,10 +44,10 @@ func validateThrough(v *reflect.Value, name string, errs ValidateError) {
 		var pv = v.Elem()
 
 		// try to put a default recursively to the pointed value
-		validateThrough(&pv, name, errs)
+		validateRecursively(&pv, name, errs)
 	case reflect.Struct:
 		// try to put default on the whole structure
-		if err := validate(v); err != nil {
+		if err := validateValue(v); err != nil {
 			errs[name] = err
 		}
 
@@ -65,17 +65,17 @@ func validateThrough(v *reflect.Value, name string, errs ValidateError) {
 			}
 
 			// handle the child recursively
-			validateThrough(&childV, fieldNamer(name, childField.Name), errs)
+			validateRecursively(&childV, keyNameFromStructFields(name, childField.Name), errs)
 		}
 	default:
 		// for every other types, try to set default
-		if err := validate(v); err != nil {
+		if err := validateValue(v); err != nil {
 			errs[name] = err
 		}
 	}
 }
 
-func validate(v *reflect.Value) error {
+func validateValue(v *reflect.Value) error {
 	// since we're gonna need the value to match an interface through the
 	// address of the struct, make sure we can do that
 	if !v.IsValid() || !v.CanInterface() || !v.CanAddr() {

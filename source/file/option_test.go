@@ -6,16 +6,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestMayNotExist(t *testing.T) {
-	var f = New("")
+func Test_MayNotExist(t *testing.T) {
+	f := New("")
 
 	assert.True(t, f.strictOpen)
 	MayNotExist()(f)
 	assert.False(t, f.strictOpen)
 }
 
-func TestFailOnUnknownFields(t *testing.T) {
-	var f = New("")
+func Test_FailOnUnknownFields(t *testing.T) {
+	f := New("")
 
 	assert.False(t, f.strictUnmarshal)
 	FailOnUnknownFields()(f)

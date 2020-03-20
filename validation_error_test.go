@@ -8,22 +8,22 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestValidateError_String(t *testing.T) {
+func TestValidationError_String(t *testing.T) {
 	t.Run("no errors", func(t *testing.T) {
-		var e = make(ValidateError)
+		var e = make(ValidationError)
 
 		assert.Equal(t, "no validation errors", e.String())
 	})
 
 	t.Run("one error", func(t *testing.T) {
-		var e = make(ValidateError)
+		var e = make(ValidationError)
 
 		e["one"] = errors.New("errone")
 		assert.Equal(t, "validation error: field one errone", e.String())
 	})
 
 	t.Run("two errors", func(t *testing.T) {
-		var e = make(ValidateError)
+		var e = make(ValidationError)
 
 		e["one"] = errors.New("errone")
 		e["two"] = errors.New("errtwo")

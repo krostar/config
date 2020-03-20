@@ -12,14 +12,10 @@ import (
 type customDuration time.Duration
 
 // ToDuration converts the custom duration back to the real time.Duration.
-func (cd *customDuration) ToDuration() time.Duration {
-	return time.Duration(*cd)
-}
+func (cd *customDuration) ToDuration() time.Duration { return time.Duration(*cd) }
 
 // ToInt64 converts the custom duration to the original value behind a time.Duration.
-func (cd *customDuration) ToInt64() int64 {
-	return int64(*cd)
-}
+func (cd *customDuration) ToInt64() int64 { return int64(*cd) }
 
 // MarshalJSON implements json Marshaler interface.
 func (cd *customDuration) MarshalJSON() ([]byte, error) {
@@ -52,5 +48,6 @@ func (cd *customDuration) UnmarshalJSON(b []byte) error {
 	}
 
 	*cd = customDuration(d)
+
 	return nil
 }

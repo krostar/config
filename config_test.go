@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestLoad_success(t *testing.T) {
+func Test_Load_success(t *testing.T) {
 	type (
 		icfgNested struct {
 			withUnexportedField int
@@ -74,7 +74,7 @@ func TestLoad_success(t *testing.T) {
 	assert.Equal(t, expectedCfg, cfg)
 }
 
-func TestLoad_failures(t *testing.T) {
+func Test_Load_failures(t *testing.T) {
 	var cfg interface{}
 
 	// nil receiver

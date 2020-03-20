@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestLoadThroughReflection(t *testing.T) {
+func Test_loadSourceByKey(t *testing.T) {
 	type (
 		icfgNested struct {
 			withUnexportedField int
@@ -82,12 +82,12 @@ func TestLoadThroughReflection(t *testing.T) {
 		}
 	)
 
-	err := loadThroughReflection(source, &cfg)
+	err := loadSourceByKey(source, &cfg)
 	require.NoError(t, err)
 	assert.Equal(t, expectedCfg, cfg)
 }
 
-func TestFieldName(t *testing.T) {
+func Test_keyNameFromStructFields(t *testing.T) {
 	var tests = map[string]struct {
 		parentName   string
 		childName    string
@@ -115,13 +115,13 @@ func TestFieldName(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 
-			name := fieldNamer(test.parentName, test.childName)
+			name := keyNameFromStructFields(test.parentName, test.childName)
 			assert.Equal(t, test.expectedName, name)
 		})
 	}
 }
 
-func TestCreateNewValueOfType(t *testing.T) {
+func Test_createNewReflectValueOfType(t *testing.T) {
 	var tests = map[string]struct {
 		valueRepr       []byte
 		valueType       reflect.Type
@@ -203,7 +203,7 @@ func TestCreateNewValueOfType(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 
-			value, err := createNewValueOfType(test.valueRepr, test.valueType)
+			value, err := createNewReflectValueOfType(test.valueRepr, test.valueType)
 			if test.expectedFailure {
 				require.Error(t, err)
 			} else {

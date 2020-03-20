@@ -15,9 +15,11 @@ import (
 
 // File implements config.Source to fetch values from a file.
 type File struct {
-	fs              afero.Fs
-	path            string
-	ext             string
+	fs afero.Fs
+
+	path string
+	ext  string
+
 	strictUnmarshal bool
 	strictOpen      bool
 }
@@ -28,15 +30,16 @@ func New(path string, opts ...Option) *File {
 	if ext != "" {
 		ext = strings.ToLower(ext[1:])
 	}
-
 	if ext == "yml" {
 		ext = "yaml"
 	}
 
 	ff := File{
-		fs:              afero.NewReadOnlyFs(afero.NewOsFs()),
-		path:            path,
-		ext:             ext,
+		fs: afero.NewReadOnlyFs(afero.NewOsFs()),
+
+		path: path,
+		ext:  ext,
+
 		strictUnmarshal: false,
 		strictOpen:      true,
 	}
@@ -80,5 +83,6 @@ func (f *File) Unmarshal(to interface{}) error {
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal file %q: %w", f.path, err)
 	}
+
 	return nil
 }

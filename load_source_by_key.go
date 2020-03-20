@@ -12,7 +12,7 @@ import (
 	"github.com/krostar/config/internal/trivialerr"
 )
 
-func loadThroughReflection(source SourceGetReprValueByKey, cfg interface{}) error {
+func loadSourceByKey(source SourceGetReprValueByKey, cfg interface{}) error {
 	var value = reflect.ValueOf(cfg)
 
 	if value.IsNil() {
@@ -20,27 +20,27 @@ func loadThroughReflection(source SourceGetReprValueByKey, cfg interface{}) erro
 	}
 
 	value = reflect.Indirect(value.Elem())
-	if _, err := loadReflectRecursivly(source, "", &value); err != nil {
+	if _, err := loadSourceByKeyRecursively(source, "", &value); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func loadReflectRecursivly(source SourceGetReprValueByKey, name string, v *reflect.Value) (bool, error) {
+func loadSourceByKeyRecursively(source SourceGetReprValueByKey, name string, v *reflect.Value) (bool, error) {
 	switch v.Kind() {
 	case reflect.Invalid:
 		return false, errors.New("value is invalid")
 	case reflect.Ptr:
-		return loadReflectHandlePointer(source, name, v)
+		return loadSourceByKeyValueIsPointer(source, name, v)
 	case reflect.Struct:
-		return loadReflectHandleStruct(source, name, v)
+		return loadSourceByKeyValueIsStruct(source, name, v)
 	default:
-		return loadReflectHandleDefault(source, name, v)
+		return loadSourceByKeyAtomicValue(source, name, v)
 	}
 }
 
-func loadReflectHandlePointer(source SourceGetReprValueByKey, name string, v *reflect.Value) (bool, error) {
+func loadSourceByKeyValueIsPointer(source SourceGetReprValueByKey, name string, v *reflect.Value) (bool, error) {
 	var validV = *v
 
 	// if we have a nil pointor, build a non-nil one
@@ -52,7 +52,7 @@ func loadReflectHandlePointer(source SourceGetReprValueByKey, name string, v *re
 	newV := validV.Elem()
 
 	// go recursively with the pointed value
-	if isSet, err := loadReflectRecursivly(source, name, &newV); err != nil || !isSet {
+	if isSet, err := loadSourceByKeyRecursively(source, name, &newV); err != nil || !isSet {
 		return false, err
 	}
 
@@ -65,8 +65,9 @@ func loadReflectHandlePointer(source SourceGetReprValueByKey, name string, v *re
 	return true, nil
 }
 
-func loadReflectHandleStruct(source SourceGetReprValueByKey, name string, v *reflect.Value) (bool, error) {
+func loadSourceByKeyValueIsStruct(source SourceGetReprValueByKey, name string, v *reflect.Value) (bool, error) {
 	const tagKey = "cfg"
+
 	var oneIsSet = false
 
 	for i := 0; i < v.NumField(); i++ {
@@ -74,12 +75,12 @@ func loadReflectHandleStruct(source SourceGetReprValueByKey, name string, v *ref
 		var (
 			childV     = v.Field(i)
 			childField = v.Type().Field(i)
-			childName  = fieldNamer(name, childField.Name)
+			childName  = keyNameFromStructFields(name, childField.Name)
 		)
 
 		// if a tag is defined, override the name with it
 		if tag := childField.Tag.Get(tagKey); tag != "" {
-			childName = fieldNamer(name, tag)
+			childName = keyNameFromStructFields(name, tag)
 		}
 
 		// ignore if the field is unexported or the name is `-`
@@ -88,7 +89,7 @@ func loadReflectHandleStruct(source SourceGetReprValueByKey, name string, v *ref
 		}
 
 		// recursive call with the value
-		if isSet, err := loadReflectRecursivly(source, childName, &childV); err == nil {
+		if isSet, err := loadSourceByKeyRecursively(source, childName, &childV); err == nil {
 			if isSet {
 				oneIsSet = true
 			}
@@ -100,7 +101,14 @@ func loadReflectHandleStruct(source SourceGetReprValueByKey, name string, v *ref
 	return oneIsSet, nil
 }
 
-func loadReflectHandleDefault(source SourceGetReprValueByKey, name string, v *reflect.Value) (bool, error) {
+func keyNameFromStructFields(parentName string, childName string) string {
+	if parentName != "" {
+		childName = parentName + "." + childName
+	}
+	return strings.ToLower(childName)
+}
+
+func loadSourceByKeyAtomicValue(source SourceGetReprValueByKey, name string, v *reflect.Value) (bool, error) {
 	// asks nicely if source has a value for this key
 	repr, err := source.GetReprValueByKey(name)
 
@@ -114,7 +122,7 @@ func loadReflectHandleDefault(source SourceGetReprValueByKey, name string, v *re
 
 	// otherwise try to use the value found
 	var newValue *reflect.Value
-	if newValue, err = createNewValueOfType(repr, v.Type()); err != nil {
+	if newValue, err = createNewReflectValueOfType(repr, v.Type()); err != nil {
 		return false, fmt.Errorf("unable to convert value for key %q: %w", name, err)
 	}
 
@@ -126,15 +134,8 @@ func loadReflectHandleDefault(source SourceGetReprValueByKey, name string, v *re
 	return true, nil
 }
 
-func fieldNamer(parentName string, childName string) string {
-	if parentName != "" {
-		childName = parentName + "." + childName
-	}
-	return strings.ToLower(childName)
-}
-
 // nolint: gocyclo
-func createNewValueOfType(repr []byte, typ reflect.Type) (*reflect.Value, error) {
+func createNewReflectValueOfType(repr []byte, typ reflect.Type) (*reflect.Value, error) {
 	if typ == nil {
 		return nil, errors.New("cannot create value of nil type")
 	}

@@ -10,7 +10,7 @@ import (
 	"github.com/krostar/config/internal/trivialerr"
 )
 
-func TestNew(t *testing.T) {
+func Test_New(t *testing.T) {
 	var tests = map[string]struct {
 		path              string
 		opts              []Option

@@ -26,7 +26,7 @@ func (sv *validateStruct) Validate() error {
 	return nil
 }
 
-func TestValidate(t *testing.T) {
+func Test_Validate(t *testing.T) {
 	var sv *validateStruct
 
 	t.Run("nil value", func(t *testing.T) {

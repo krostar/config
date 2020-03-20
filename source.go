@@ -1,6 +1,6 @@
 package config
 
-// Source defines the interface any source should implements.
+// Source defines the interface any source must implements.
 type Source interface {
 	Name() string
 }

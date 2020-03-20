@@ -40,7 +40,7 @@ func walkThrough(v *reflect.Value) {
 		}
 
 		// retrieve the pointed value
-		var pv = v.Elem()
+		pv := v.Elem()
 
 		// try to put a default recursively to the pointed value
 		walkThrough(&pv)
@@ -52,10 +52,8 @@ func walkThrough(v *reflect.Value) {
 		// try each fields, there may be empty fields that also want defaults
 		for i := 0; i < v.NumField(); i++ {
 			// get field
-			var (
-				childV     = v.Field(i)
-				childField = v.Type().Field(i)
-			)
+			childV := v.Field(i)
+			childField := v.Type().Field(i)
 
 			// check if the tag discard the field
 			if tag := childField.Tag.Get(tagKey); tag == "-" {

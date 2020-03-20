@@ -5,13 +5,13 @@ import (
 	"strings"
 )
 
-// ValidateError contains all validation errors.
+// ValidationError contains all validation errors.
 // Keys are field in error (with arboresence) and value the error.
 // Key can be empty if the root interface failed.
-type ValidateError map[string]error
+type ValidationError map[string]error
 
-// String implements Stringer for ValidateError.
-func (v ValidateError) String() string {
+// String implements Stringer for ValidationError.
+func (v ValidationError) String() string {
 	if len(v) == 0 {
 		return "no validation errors"
 	}
@@ -28,7 +28,5 @@ func (v ValidateError) String() string {
 	return "validation error: " + strings.Join(errors, ", ")
 }
 
-// Error implements Error for ValidateError.
-func (v ValidateError) Error() string {
-	return v.String()
-}
+// Error implements error.
+func (v ValidationError) Error() string { return v.String() }

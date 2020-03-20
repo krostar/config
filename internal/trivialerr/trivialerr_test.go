@@ -7,19 +7,19 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestNew(t *testing.T) {
+func Test_New(t *testing.T) {
 	err := New("msg %d %d", 1, 2)
 	assert.IsType(t, trivialError{}, err)
 	assert.Equal(t, "msg 1 2", err.Error())
 }
 
-func TestWrap(t *testing.T) {
+func Test_Wrap(t *testing.T) {
 	err := Wrap(errors.New("eww"))
 	assert.IsType(t, trivialError{}, err)
 	assert.Equal(t, "eww", err.Error())
 }
 
-func TestWrapIf(t *testing.T) {
+func Test_WrapIf(t *testing.T) {
 	var originalErr = errors.New("hello")
 
 	err := WrapIf(false, nil)
@@ -36,7 +36,7 @@ func TestWrapIf(t *testing.T) {
 	assert.Equal(t, originalErr.Error(), err.Error())
 }
 
-func TestIsTrivial(t *testing.T) {
+func Test_IsTrivial(t *testing.T) {
 	var (
 		originalErr = errors.New("hello")
 		trivialErr  = New("hello")

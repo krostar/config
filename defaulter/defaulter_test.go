@@ -23,31 +23,25 @@ type structSimple struct {
 	String    string
 }
 
-func (sc *structSimple) SetDefault() {
-	sc.Different = "people"
-}
+func (sc *structSimple) SetDefault() { sc.Different = "people" }
 
 type stringDefaultable string
 
-func (s *stringDefaultable) SetDefault() {
-	*s = "world"
-}
+func (s *stringDefaultable) SetDefault() { *s = "world" }
 
-func TestSetDefault(t *testing.T) {
-	var (
-		sc = structComplex{
-			PTRTouched: new(stringDefaultable),
-			unexported: "",
-		}
-		defaultable = stringDefaultable("world")
-		expectedSC  = structComplex{
-			PTRTouched: &defaultable,
-			Default:    "world",
-			Simple: structSimple{
-				Different: "people",
-			},
-		}
-	)
+func Test_SetDefault(t *testing.T) {
+	sc := structComplex{
+		PTRTouched: new(stringDefaultable),
+		unexported: "",
+	}
+	defaultable := stringDefaultable("world")
+	expectedSC := structComplex{
+		PTRTouched: &defaultable,
+		Default:    "world",
+		Simple: structSimple{
+			Different: "people",
+		},
+	}
 
 	require.NoError(t, SetDefault(&sc))
 	assert.Equal(t, expectedSC, sc)
@@ -55,7 +49,7 @@ func TestSetDefault(t *testing.T) {
 	assert.Error(t, SetDefault(nil))
 }
 
-func TestTryToSetDefault(t *testing.T) {
+func Test_tryToSetDefault(t *testing.T) {
 	var (
 		zeroString                  = ""
 		expectedZeroString          = zeroString
@@ -67,7 +61,7 @@ func TestTryToSetDefault(t *testing.T) {
 		expectedNonZeroCustomString = nonZerocustomString
 	)
 
-	var tests = map[string]struct {
+	tests := map[string]struct {
 		value         reflect.Value
 		expectedValue reflect.Value
 	}{
@@ -101,8 +95,8 @@ func TestTryToSetDefault(t *testing.T) {
 	}
 }
 
-func TestIsZeroValue(t *testing.T) {
-	var tests = map[string]struct {
+func Test_isZeroValue(t *testing.T) {
+	tests := map[string]struct {
 		value              reflect.Value
 		isExpectedToBeZero bool
 	}{
