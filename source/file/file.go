@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/krostar/config"
+
 	"github.com/spf13/afero"
 	yaml "gopkg.in/yaml.v3"
 
@@ -25,30 +27,32 @@ type File struct {
 }
 
 // New returns a new file source.
-func New(path string, opts ...Option) *File {
-	var ext = filepath.Ext(path)
-	if ext != "" {
-		ext = strings.ToLower(ext[1:])
+func New(path string, opts ...Option) config.SourceCreationFunc {
+	return func() (config.Source, error) {
+		var ext = filepath.Ext(path)
+		if ext != "" {
+			ext = strings.ToLower(ext[1:])
+		}
+		if ext == "yml" {
+			ext = "yaml"
+		}
+
+		ff := File{
+			fs: afero.NewReadOnlyFs(afero.NewOsFs()),
+
+			path: path,
+			ext:  ext,
+
+			strictUnmarshal: false,
+			strictOpen:      true,
+		}
+
+		for _, opt := range opts {
+			opt(&ff)
+		}
+
+		return &ff, nil
 	}
-	if ext == "yml" {
-		ext = "yaml"
-	}
-
-	ff := File{
-		fs: afero.NewReadOnlyFs(afero.NewOsFs()),
-
-		path: path,
-		ext:  ext,
-
-		strictUnmarshal: false,
-		strictOpen:      true,
-	}
-
-	for _, opt := range opts {
-		opt(&ff)
-	}
-
-	return &ff
 }
 
 // Name implements config.Source interface.

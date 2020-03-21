@@ -65,7 +65,7 @@ func validateRecursively(v *reflect.Value, name string, errs ValidationError) {
 			}
 
 			// handle the child recursively
-			validateRecursively(&childV, keyNameFromStructFields(name, childField.Name), errs)
+			validateRecursively(&childV, appendConfigTreePath(name, childField.Name), errs)
 		}
 	default:
 		// for every other types, try to set default

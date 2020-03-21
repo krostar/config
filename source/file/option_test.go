@@ -7,7 +7,7 @@ import (
 )
 
 func Test_MayNotExist(t *testing.T) {
-	f := New("")
+	f := newFile(t, "")
 
 	assert.True(t, f.strictOpen)
 	MayNotExist()(f)
@@ -15,7 +15,7 @@ func Test_MayNotExist(t *testing.T) {
 }
 
 func Test_FailOnUnknownFields(t *testing.T) {
-	f := New("")
+	f := newFile(t, "")
 
 	assert.False(t, f.strictUnmarshal)
 	FailOnUnknownFields()(f)

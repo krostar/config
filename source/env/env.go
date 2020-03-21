@@ -2,9 +2,12 @@
 package sourceenv
 
 import (
+	"fmt"
 	"os"
+	"reflect"
 	"strings"
 
+	"github.com/krostar/config"
 	"github.com/krostar/config/internal/trivialerr"
 )
 
@@ -15,8 +18,10 @@ type Env struct {
 }
 
 // New returns a new env source.
-func New(prefix string) *Env {
-	return &Env{prefix: prefix}
+func New(prefix string) config.SourceCreationFunc {
+	return func() (config.Source, error) {
+		return &Env{prefix: prefix}, nil
+	}
 }
 
 // Name implements config.Source interface.
@@ -29,16 +34,20 @@ func (e *Env) keyFormatter(key string) string {
 		Replace(strings.ToUpper(e.prefix + "_" + key))
 }
 
-// GetReprValueByKey gets the key's value from the system environment and return
-// it. It return an error that implement IsTrivial when the key is not found.
-// It never returns another kind of error.
-func (e *Env) GetReprValueByKey(key string) ([]byte, error) {
-	key = e.keyFormatter(key)
+// SetValueFromConfigTreePath gets the key's value from the system environment and
+// set it. It return an error that implement IsTrivial when the key is not found.
+func (e *Env) SetValueFromConfigTreePath(v *reflect.Value, treePath string) (bool, error) {
+	treePath = e.keyFormatter(treePath)
 
-	env, exists := os.LookupEnv(key)
+	env, exists := os.LookupEnv(treePath)
 	if !exists {
-		return nil, trivialerr.New("env does not contain key %s", key)
+		return false, trivialerr.New("env does not contain key %s", treePath)
 	}
 
-	return []byte(env), nil
+	newV, err := config.InitializeNewValueOfTypeWithString(v.Type(), env)
+	if err != nil {
+		return false, fmt.Errorf("unable to initialize new value from %q: %w", env, err)
+	}
+
+	return config.SetNewValue(v, newV)
 }

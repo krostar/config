@@ -33,16 +33,16 @@ func Test_Load_success(t *testing.T) {
 		i      = 42
 		str    = "I'm not nil anymore"
 		source = stubSourceThatUseReflection{
-			"hello":                                []byte("world"),
-			"universalanswer":                      []byte("42"),
-			"withunexportedfield":                  []byte("-30"),
-			"withdefaultvalue":                     []byte("I've been replaced"),
-			"withnestedstruct.withunexportedfield": []byte("-30"),
-			"withnestedstruct.olleh":               []byte("dlrow"),
-			"withnestedstruct.universalstranswer":  []byte("forty-two"),
-			"withinterface":                        []byte("blih"),
-			"withnilpointer":                       []byte("I'm not nil anymore"),
-			"withpointer":                          []byte("42"),
+			"hello":                                "world",
+			"universalanswer":                      "42",
+			"withunexportedfield":                  "-30",
+			"withdefaultvalue":                     "I've been replaced",
+			"withnestedstruct.withunexportedfield": "-30",
+			"withnestedstruct.olleh":               "dlrow",
+			"withnestedstruct.universalstranswer":  "forty-two",
+			"withinterface":                        "blih",
+			"withnilpointer":                       "I'm not nil anymore",
+			"withpointer":                          "42",
 		}
 		cfg = icfg{
 			WithDiscardTagWithDefault: "I should NOT be replaced",
@@ -69,7 +69,7 @@ func Test_Load_success(t *testing.T) {
 			WithPointer:    &i,
 		}
 	)
-	err := Load(&cfg, WithSources(source))
+	err := Load(&cfg, WithRawSources(source))
 	require.NoError(t, err)
 	assert.Equal(t, expectedCfg, cfg)
 }
@@ -82,13 +82,13 @@ func Test_Load_failures(t *testing.T) {
 	// non-ptr receiver
 	require.Error(t, Load(cfg))
 	// unknown type of source
-	require.Error(t, Load(&cfg, WithSources(&dumbSource{})))
+	require.Error(t, Load(&cfg, WithRawSources(&dumbSource{})))
 	// source that returns no errors
-	require.NoError(t, Load(&cfg, WithSources(stubSourceThatUnmarshal(0))))
+	require.NoError(t, Load(&cfg, WithRawSources(stubSourceThatUnmarshal(0))))
 	// source that returns a trivial error
-	require.NoError(t, Load(&cfg, WithSources(stubSourceThatUnmarshal(-1))))
+	require.NoError(t, Load(&cfg, WithRawSources(stubSourceThatUnmarshal(-1))))
 	// source that returns a real error
-	require.Error(t, Load(&cfg, WithSources(stubSourceThatUnmarshal(1))))
+	require.Error(t, Load(&cfg, WithRawSources(stubSourceThatUnmarshal(1))))
 }
 
 func TestConfig_Load_opts_applied(t *testing.T) {
@@ -97,10 +97,11 @@ func TestConfig_Load_opts_applied(t *testing.T) {
 		s1  = dumbSource{}
 		s2  = dumbSource{}
 	)
-	var c = New(WithSources(s2))
 
-	// this is gonna fail as dumbSource does not really implement a usesable source
-	assert.Error(t, c.Load(&cfg, WithSourcesPrepend(s1)))
+	loader, err := New(WithRawSources(s1), WithRawSources(s2))
+	require.NoError(t, err)
 
-	assert.Equal(t, []Source{s1, s2}, c.sources)
+	require.Error(t, loader.Load(&cfg))
+
+	assert.Equal(t, []Source{s1, s2}, loader.sources)
 }
