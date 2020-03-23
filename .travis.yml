@@ -1,9 +1,10 @@
 ---
 
+os: "linux"
 dist: "xenial"
-language: "minimal"
+language: "shell"
 
-service:
+services:
   - "docker"
 
 script:
