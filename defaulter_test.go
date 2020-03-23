@@ -1,4 +1,4 @@
-package defaulter
+package config
 
 import (
 	"reflect"

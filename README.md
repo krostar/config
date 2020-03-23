@@ -30,13 +30,13 @@ From my point of view a configuration package should:
 -   be **light**
 -   encourage and follow the **best practices**
 
-That's what I tried to do in this configuration package which is made of 3 components:
+That's what I tried to do in this configuration package which is made of 4 components:
 
--   the default setter (the `defaulter` package) which handles defaults
+-   the default setter which handles defaults
 -   the sources (anything that implements one of the two sources interfaces) responsible for
         the retrieval of the configuration
--   the "loader" (the `config` package) which is responsible to set the `default` if any
-        and to call each `sources`
+-   the "loader" which is responsible to set the `default` if any and to call each `sources`
+-   additionally, a validation can be made to make sure configuration is valid
 
 ## Usage / examples
 

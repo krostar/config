@@ -23,10 +23,11 @@ func (c *OtherConfig) SetDefault() {
 	c.UniversalAnswer = 42
 }
 
-func Example() {
+func ExampleLoad() {
 	var cfg Config
 
 	os.Setenv("MYAPP_SOMEOTHER_UNIVERSALANSWER", "1010") // nolint: errcheck, gosec
+	defer os.Unsetenv("MYAPP_SOMEOTHER_UNIVERSALANSWER") // nolint: errcheck, gosec
 
 	if err := config.Load(&cfg, config.WithSources(
 		sourceenv.New("myapp"),
@@ -44,4 +45,51 @@ func Example() {
 	// cfg.Some.UniversalAnswer      = 42
 	// cfg.SomeOther.UniversalAnswer = 1010
 	// cfg.SomeLast                  = <nil>
+}
+
+type HTTPConfig struct {
+	Debug         bool
+	ListenAddress string
+}
+
+func (c *HTTPConfig) SetDefault() {
+	c.ListenAddress = "127.0.0.1:8080"
+}
+
+func (c HTTPConfig) Validate() error {
+	if c.ListenAddress == "" {
+		return fmt.Errorf("listening address can't be empty")
+	}
+	return nil
+}
+
+func ExampleValidate() {
+	cfg := HTTPConfig{
+		Debug:         false,
+		ListenAddress: "",
+	}
+
+	err := config.Validate(&cfg)
+
+	fmt.Println("failed:", err != nil)
+	fmt.Println("reason:", err.Error())
+
+	// Output:
+	// failed: true
+	// reason: validation error: listening address can't be empty
+}
+
+func ExampleSetDefault() {
+	var cfg HTTPConfig
+
+	if err := config.SetDefault(&cfg); err != nil {
+		panic("unable to set defaults")
+	}
+
+	fmt.Println("debug:", cfg.Debug)
+	fmt.Println("listen-address:", cfg.ListenAddress)
+
+	// Output:
+	// debug: false
+	// listen-address: 127.0.0.1:8080
 }
